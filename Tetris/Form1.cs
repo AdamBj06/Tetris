@@ -39,6 +39,7 @@ namespace Tetris
         public Form1() //30 pixel = 1;
         {
             InitializeComponent();
+            NextBlock = Block.Next(1, 8);
         }
 
         #region Movement
@@ -87,34 +88,34 @@ namespace Tetris
             if (!Empty)
             {
                 X = 0; OldX = 0; OldY = 0;
-                Bl = Block.Next(1, 8);
+                Bl = NextBlock;
                 switch (Bl)
                 {
-                    case 1:
+                    case 1: //long
                         PosXL = 5; PosXR = 5;
                         PosY = 3; OldY = 3;
                         break;
-                    case 2:
+                    case 2: //l right
                         PosXL = 4; PosXR = 6;
                         PosY = 1; OldY = 1;
                         break;
-                    case 3:
+                    case 3: //l left
                         PosXL = 4; PosXR = 6;
                         PosY = 1; OldY = 1;
                         break;
-                    case 4:
+                    case 4: //square
                         PosXL = 4; PosXR = 5;
                         PosY = 1; OldY = 1;
                         break;
-                    case 5:
+                    case 5: //z right
                         PosXL = 4; PosXR = 6;
                         PosY = 1; OldY = 1;
                         break;
-                    case 6:
+                    case 6: //z left
                         PosXL = 4; PosXR = 6;
                         PosY = 1; OldY = 1;
                         break;
-                    case 7:
+                    case 7: //t
                         PosXL = 4; PosXR = 6;
                         PosY = 1; OldY = 1;
                         break;
@@ -131,47 +132,46 @@ namespace Tetris
                 pictureBoxNB[2, 1].BackColor = Color.Transparent;
                 pictureBoxNB[2, 2].BackColor = Color.Transparent;
                 pictureBoxNB[3, 1].BackColor = Color.Transparent;
-                pictureBoxNB[4, 1].BackColor = Color.Transparent;
                 NextBlock = Block.Next(1, 8);
                 switch (NextBlock) 
                 {
-                    case 1:
+                    case 1: //long
                         pictureBoxNB[0, 1].BackColor = Color.LightBlue;
                         pictureBoxNB[1, 1].BackColor = Color.LightBlue;
                         pictureBoxNB[2, 1].BackColor = Color.LightBlue;
                         pictureBoxNB[3, 1].BackColor = Color.LightBlue;
                         break;
-                    case 2:
+                    case 2: //l right
                         pictureBoxNB[1, 0].BackColor = Color.Blue;
                         pictureBoxNB[2, 0].BackColor = Color.Blue;
                         pictureBoxNB[2, 1].BackColor = Color.Blue;
                         pictureBoxNB[2, 2].BackColor = Color.Blue;
                         break;
-                    case 3:
+                    case 3: //l left
                         pictureBoxNB[1, 2].BackColor = Color.Orange;
                         pictureBoxNB[2, 0].BackColor = Color.Orange;
                         pictureBoxNB[2, 1].BackColor = Color.Orange;
                         pictureBoxNB[2, 2].BackColor = Color.Orange;
                         break;
-                    case 4:
+                    case 4: //square
                         pictureBoxNB[0, 0].BackColor = Color.Yellow;
                         pictureBoxNB[0, 1].BackColor = Color.Yellow;
                         pictureBoxNB[1, 0].BackColor = Color.Yellow;
                         pictureBoxNB[1, 1].BackColor = Color.Yellow;
                         break;
-                    case 5:
+                    case 5: //z right
                         pictureBoxNB[1, 1].BackColor = Color.Green;
                         pictureBoxNB[1, 2].BackColor = Color.Green;
                         pictureBoxNB[2, 0].BackColor = Color.Green;
                         pictureBoxNB[2, 1].BackColor = Color.Green;
                         break;
-                    case 6:
+                    case 6: //z left
                         pictureBoxNB[1, 0].BackColor = Color.Purple;
                         pictureBoxNB[1, 1].BackColor = Color.Purple;
                         pictureBoxNB[2, 1].BackColor = Color.Purple;
                         pictureBoxNB[2, 2].BackColor = Color.Purple;
                         break;
-                    case 7:
+                    case 7: //t
                         pictureBoxNB[1, 1].BackColor = Color.Red;
                         pictureBoxNB[2, 0].BackColor = Color.Red;
                         pictureBoxNB[2, 1].BackColor = Color.Red;
@@ -182,21 +182,50 @@ namespace Tetris
                 }
             }
 
-            if (PosY == 19)
-            {
-                Empty = true;
-            }
-            else if (PosY >= 20)
+            if (PosY >= 20)
             {
                 Empty = false;
             }
-            else if (pictureBox[PosY + 1, PosXL].BackColor == Color.Transparent || pictureBox[PosY + 1, PosXR - 1].BackColor == Color.Transparent || pictureBox[PosY + 1, PosXR].BackColor == Color.Transparent) 
+            else if (Bl == 1)
             {
-                Empty = true;
+                if(pictureBox[PosY, PosXL].BackColor != Color.Transparent)
+                {
+                    Empty = false;
+                }
+                else
+                {
+                    Empty = true;
+                }
+            }
+            else if (Bl == 5)
+            {
+                if (pictureBox[PosY, PosXL].BackColor != Color.Transparent || pictureBox[PosY, PosXL + 1].BackColor != Color.Transparent || pictureBox[PosY - 1, PosXR].BackColor != Color.Transparent)
+                {
+                    Empty = false;
+                }
+                else
+                {
+                    Empty = true;
+                }
+            }
+            else if (Bl == 6)
+            {
+                if (pictureBox[PosY - 1, PosXL].BackColor != Color.Transparent || pictureBox[PosY, PosXR - 1].BackColor != Color.Transparent || pictureBox[PosY, PosXR].BackColor != Color.Transparent)
+                {
+                    Empty = false;
+                }
+                else
+                {
+                    Empty = true;
+                }
+            }
+            else if (pictureBox[PosY, PosXL].BackColor != Color.Transparent || pictureBox[PosY, PosXR - 1].BackColor != Color.Transparent || pictureBox[PosY, PosXR].BackColor != Color.Transparent) 
+            {
+                Empty = false;
             }
             else
             {
-                Empty = false;
+                Empty = true;
             }
 
             if (Empty)
@@ -204,45 +233,45 @@ namespace Tetris
                 OldY++;
                 switch (Bl)
                 {
-                    case 1:
+                    case 1: //long
                         pictureBox[0 + OldY - 1, 5 + OldX].BackColor = Color.Transparent;
                         pictureBox[1 + OldY - 1, 5 + OldX].BackColor = Color.Transparent;
                         pictureBox[2 + OldY - 1, 5 + OldX].BackColor = Color.Transparent;
                         pictureBox[3 + OldY - 1, 5 + OldX].BackColor = Color.Transparent;
                         break;
-                    case 2:
+                    case 2: //l right
                         pictureBox[0 + OldY - 1, 4 + OldX].BackColor = Color.Transparent;
                         pictureBox[1 + OldY - 1, 4 + OldX].BackColor = Color.Transparent;
                         pictureBox[1 + OldY - 1, 5 + OldX].BackColor = Color.Transparent;
                         pictureBox[1 + OldY - 1, 6 + OldX].BackColor = Color.Transparent;
                         break;
-                    case 3:
+                    case 3: //l left
                         pictureBox[0 + OldY - 1, 6 + OldX].BackColor = Color.Transparent;
                         pictureBox[1 + OldY - 1, 4 + OldX].BackColor = Color.Transparent;
                         pictureBox[1 + OldY - 1, 5 + OldX].BackColor = Color.Transparent;
                         pictureBox[1 + OldY - 1, 6 + OldX].BackColor = Color.Transparent;
                         break;
-                    case 4:
+                    case 4: //square
                         pictureBox[0 + OldY - 1, 4 + OldX].BackColor = Color.Transparent;
                         pictureBox[0 + OldY - 1, 5 + OldX].BackColor = Color.Transparent;
                         pictureBox[1 + OldY - 1, 4 + OldX].BackColor = Color.Transparent;
                         pictureBox[1 + OldY - 1, 5 + OldX].BackColor = Color.Transparent;
                         break;
-                    case 5:
+                    case 5: //z right
                         pictureBox[0 + OldY - 1, 5 + OldX].BackColor = Color.Transparent;
                         pictureBox[0 + OldY - 1, 6 + OldX].BackColor = Color.Transparent;
                         pictureBox[1 + OldY - 1, 4 + OldX].BackColor = Color.Transparent;
                         pictureBox[1 + OldY - 1, 5 + OldX].BackColor = Color.Transparent;
                         break;
-                    case 6:
+                    case 6: //z left
                         pictureBox[0 + OldY - 1, 4 + OldX].BackColor = Color.Transparent;
                         pictureBox[0 + OldY - 1, 5 + OldX].BackColor = Color.Transparent;
                         pictureBox[1 + OldY - 1, 5 + OldX].BackColor = Color.Transparent;
                         pictureBox[1 + OldY - 1, 6 + OldX].BackColor = Color.Transparent;
                         break;
-                    case 7:
+                    case 7: //t
                         pictureBox[0 + OldY - 1, 5 + OldX].BackColor = Color.Transparent;
-                        pictureBox[0 + OldY - 1, 4 + OldX].BackColor = Color.Transparent;
+                        pictureBox[1 + OldY - 1, 4 + OldX].BackColor = Color.Transparent;
                         pictureBox[1 + OldY - 1, 5 + OldX].BackColor = Color.Transparent;
                         pictureBox[1 + OldY - 1, 6 + OldX].BackColor = Color.Transparent;
                         break;
@@ -250,7 +279,7 @@ namespace Tetris
 
                 switch (Bl)
                 {
-                    case 1:
+                    case 1: //long
                         pictureBox[0 + PosY - 3, 5 + X].BackColor = Color.LightBlue;
                         pictureBox[1 + PosY - 3, 5 + X].BackColor = Color.LightBlue;
                         pictureBox[2 + PosY - 3, 5 + X].BackColor = Color.LightBlue;
@@ -258,7 +287,7 @@ namespace Tetris
                         OldY = PosY - 3;
                         OldX = X;
                         break;
-                    case 2:
+                    case 2: //l right
                         pictureBox[0 + PosY - 1, 4 + X].BackColor = Color.Blue;
                         pictureBox[1 + PosY - 1, 4 + X].BackColor = Color.Blue;
                         pictureBox[1 + PosY - 1, 5 + X].BackColor = Color.Blue;
@@ -266,7 +295,7 @@ namespace Tetris
                         OldY = PosY - 1;
                         OldX = X;
                         break;
-                    case 3:
+                    case 3: //l left
                         pictureBox[0 + PosY - 1, 6 + X].BackColor = Color.Orange;
                         pictureBox[1 + PosY - 1, 4 + X].BackColor = Color.Orange;
                         pictureBox[1 + PosY - 1, 5 + X].BackColor = Color.Orange;
@@ -274,7 +303,7 @@ namespace Tetris
                         OldY = PosY - 1;
                         OldX = X;
                         break;
-                    case 4:
+                    case 4: //square
                         pictureBox[0 + PosY - 1, 4 + X].BackColor = Color.Yellow;
                         pictureBox[0 + PosY - 1, 5 + X].BackColor = Color.Yellow;
                         pictureBox[1 + PosY - 1, 4 + X].BackColor = Color.Yellow;
@@ -282,7 +311,7 @@ namespace Tetris
                         OldY = PosY - 1;
                         OldX = X;
                         break;
-                    case 5:
+                    case 5: //z right
                         pictureBox[0 + PosY - 1, 5 + X].BackColor = Color.Green;
                         pictureBox[0 + PosY - 1, 6 + X].BackColor = Color.Green;
                         pictureBox[1 + PosY - 1, 4 + X].BackColor = Color.Green;
@@ -290,7 +319,7 @@ namespace Tetris
                         OldY = PosY - 1;
                         OldX = X;
                         break;
-                    case 6:
+                    case 6: //z left
                         pictureBox[0 + PosY - 1, 4 + X].BackColor = Color.Purple;
                         pictureBox[0 + PosY - 1, 5 + X].BackColor = Color.Purple;
                         pictureBox[1 + PosY - 1, 5 + X].BackColor = Color.Purple;
@@ -298,9 +327,9 @@ namespace Tetris
                         OldY = PosY - 1;
                         OldX = X;
                         break;
-                    case 7:
+                    case 7: //t
                         pictureBox[0 + PosY - 1, 5 + X].BackColor = Color.Red;
-                        pictureBox[0 + PosY - 1, 4 + X].BackColor = Color.Red;
+                        pictureBox[1 + PosY - 1, 4 + X].BackColor = Color.Red;
                         pictureBox[1 + PosY - 1, 5 + X].BackColor = Color.Red;
                         pictureBox[1 + PosY - 1, 6 + X].BackColor = Color.Red;
                         OldY = PosY - 1;
