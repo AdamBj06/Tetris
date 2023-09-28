@@ -73,13 +73,13 @@ namespace Tetris
             //
             if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
             {
-                timer1.Interval = 33;
+                timer1.Interval = 50;
             }
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            timer1.Interval = 1000;
+            timer1.Interval = 800;
         }
         #endregion
 
@@ -201,7 +201,14 @@ namespace Tetris
             {
                 if (pictureBox[PosY, PosXL].BackColor != Color.Transparent || pictureBox[PosY, PosXL + 1].BackColor != Color.Transparent || pictureBox[PosY - 1, PosXR].BackColor != Color.Transparent)
                 {
-                    Empty = false;
+                    if (pictureBox[PosY - 1, PosXR].BackColor == Color.Green)
+                    {
+                        Empty = true;
+                    }
+                    else
+                    {
+                        Empty = false;
+                    }
                 }
                 else
                 {
@@ -212,7 +219,14 @@ namespace Tetris
             {
                 if (pictureBox[PosY - 1, PosXL].BackColor != Color.Transparent || pictureBox[PosY, PosXR - 1].BackColor != Color.Transparent || pictureBox[PosY, PosXR].BackColor != Color.Transparent)
                 {
-                    Empty = false;
+                    if (pictureBox[PosY - 1, PosXL].BackColor == Color.Purple)
+                    {
+                        Empty = true;
+                    }
+                    else
+                    {
+                        Empty = false;
+                    }
                 }
                 else
                 {
